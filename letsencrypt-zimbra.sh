@@ -191,12 +191,6 @@ log_tag="letsencrypt-zimbra"
 # default value for facility (if not set in config file)
 log_facility="${log_facility:-local6}"
 
-letsencrypt_altchain=${letsencrypt_altchain:-true}
-if ! [[ "$letsencrypt_altchain" == 'true' || "$letsencrypt_altchain" == 'false' ]]; then
-    warning "letsencrypt_altchain parameter has unsupported value '$letsencrypt_altchain'; considering as 'false'"
-    letsencrypt_altchain='false'
-fi
-
 # zimbra keys paths (with default values)
 zimbra_ssl_dir="${zimbra_ssl_dir:-${zimbra_dir}/ssl/zimbra/commercial}"
 zimbra_key="${zimbra_key:-${zimbra_ssl_dir}/commercial.key}"
@@ -292,19 +286,9 @@ shift $(( OPTIND-1 ))
 
 # root CA certificate - zimbra needs it
 if [[ "$TESTING" == 'true' ]]; then
-    if [[ "$letsencrypt_altchain" == 'true' ]]; then
-        root_CA_file="${letsencrypt_zimbra_dir}/root_certs/letsencrypt-stg-root-x1.pem"
-        certbot_extra_args+=("--preferred-chain" "(STAGING) Pretend Pear X1")
-    else
-        root_CA_file="${letsencrypt_zimbra_dir}/root_certs/letsencrypt-stg-DST3.pem"
-    fi
+    root_CA_file="${letsencrypt_zimbra_dir}/root_certs/letsencrypt-stg-root-x1.pem"
 else
-    if [[ "$letsencrypt_altchain" == 'true' ]]; then
-        root_CA_file="${letsencrypt_zimbra_dir}/root_certs/ISRG_Root_X1.crt"
-        certbot_extra_args+=("--preferred-chain" "ISRG Root X1")
-    else
-        root_CA_file="${letsencrypt_zimbra_dir}/root_certs/DSTRootCAX3.pem"
-    fi
+    root_CA_file="${letsencrypt_zimbra_dir}/root_certs/ISRG_Root_X1.crt"
 fi
 
 
