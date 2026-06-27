@@ -1,4 +1,4 @@
-# letsencrypt-zimbra
+# letsencrypt-ugba
 
 Files to automate the deploy of letsencrypt certificates to Zimbra.
 
